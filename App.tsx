@@ -1,20 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider as ReduxProvider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { store, persistor } from './src/store';
+import { RootNavigator } from './src/navigation';
+import { useAppTheme } from './src/utils/theme';
+import LoadingScreen from './src/screens/LoadingScreen';
+// AppWrapper to use theme hook inside Redux context
+const AppWrapper = () => {
+  const theme = useAppTheme();
+  
+  return (
+    <PaperProvider theme={theme}>
+      <SafeAreaProvider>
+        <RootNavigator />
+      </SafeAreaProvider>
+    </PaperProvider>
+  );
+};
 
+// Main App component with Redux Provider
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ReduxProvider store={store}>
+      <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+        <AppWrapper />
+      </PersistGate>
+    </ReduxProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
