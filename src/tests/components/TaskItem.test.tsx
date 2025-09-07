@@ -5,20 +5,6 @@ import { MD3LightTheme } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import TaskItem from '../../components/tasks/TaskItem';
 
-// Suppress act warnings for Icon updates
-const originalError = console.error;
-beforeAll(() => {
-  console.error = (...args) => {
-    if (typeof args[0] === 'string' && args[0].includes('An update to Icon inside a test was not wrapped in act')) {
-      return;
-    }
-    originalError.call(console, ...args);
-  };
-});
-afterAll(() => {
-  console.error = originalError;
-});
-
 // Mock task data
 const mockTask = {
   id: '1',
