@@ -2,7 +2,22 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { MD3LightTheme } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
 import TaskItem from '../../components/tasks/TaskItem';
+
+// Suppress act warnings for Icon updates
+const originalError = console.error;
+beforeAll(() => {
+  console.error = (...args) => {
+    if (typeof args[0] === 'string' && args[0].includes('An update to Icon inside a test was not wrapped in act')) {
+      return;
+    }
+    originalError.call(console, ...args);
+  };
+});
+afterAll(() => {
+  console.error = originalError;
+});
 
 // Mock task data
 const mockTask = {
@@ -91,12 +106,8 @@ describe('TaskItem Component', () => {
     // Check if the title has the completed style (line-through)
     // Note: This assumes we've added a testID to the title Text component
     const titleElement = getByTestId('task-title');
-    expect(titleElement.props.style).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          textDecorationLine: 'line-through',
-        }),
-      ])
-    );
+    expect(StyleSheet.flatten(titleElement.props.style)).toMatchObject({
+      textDecorationLine: 'line-through',
+    });
   });
 });

@@ -123,7 +123,6 @@ const EnhancedTaskItem = ({ task, onPress, onToggleComplete, onDelete }: Enhance
                     <Chip
                       style={[styles.priorityChip, { backgroundColor: getPriorityColor() }]}
                       textStyle={styles.chipText}
-                      compact
                     >
                       {task.priority.toUpperCase()}
                     </Chip>
@@ -198,8 +197,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   priorityChip: {
-    height: 24,
+    height: 30,
     marginRight: spacing.s,
+    minWidth: 70,
+    paddingHorizontal: 8,
   },
   chipText: {
     fontSize: fontSizes.xs,
